@@ -1,0 +1,29 @@
+{
+  "name": "noticiasauten",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felipe-programador-18/Noticiaautenticacao.git"
+  },
+  "keywords": [],
+  "author": "felipe martins",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felipe-programador-18/Noticiaautenticacao/issues"
+  },
+  "homepage": "https://github.com/felipe-programador-18/Noticiaautenticacao#readme",
+  "devDependencies": {
+    "express": "^4.17.3",
+    "jest": "^27.5.1"
+  },
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "mongodb": "^4.4.1",
+    "mongoose": "^6.2.7"
+  }
+}
