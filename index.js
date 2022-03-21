@@ -2,7 +2,11 @@ const express = require("express")
 const api = express()
 const port  = process.env.PORT || 3000
 const path = require('path')
-const UserModel = require('./models/user')
+const session = require('express-session')
+const bodyParser = require('body-parser')
+
+const noticias = require('./routes/noticias')
+const restrito = require('./routes/restrito')
 
 const mongodb = process.env.MONGODB || 'mongodb://localhost/noticia'
 const mongoose = require('mongoose')
@@ -12,6 +16,37 @@ api.get('/', (req, res) => res.render(''))
 api.set('views', path.join(__dirname, 'views'))
 api.set('view engine','ejs')
 api.use(express.static(path.join( __dirname ,'views')))
+api.use(session ({
+         secret:'teste',
+         resave: true,
+         saveUninitialized: true}
+         ))
+api.use(bodyParser.urlencoded({extended:true}))
+
+
+
+api.use('/noticias', noticias)
+api.use('/restrito', (req,res, next) => {
+    if('user' in req.session){
+       return next()
+    }  
+    res.redirect('/login')   
+})
+
+api.use('/restrito', restrito )
+api.get('/login', (req,res)=>{
+    res.render('login')
+})
+
+const UserModel = require('./models/user')
+api.post('/login', async(req,res) =>{
+  const user = await UserModel.findOne({username:req.body.username})
+      res.send(user)
+})
+
+
+
+
 
 const createInicialUser = async() => {
     const total = await UserModel.count({username:"felipemartins"})
