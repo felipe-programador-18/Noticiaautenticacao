@@ -27,12 +27,24 @@ api.use(bodyParser.urlencoded({extended:true}))
 
 
 api.use('/noticias', noticias)
+
+//theoreticol create middlware about all routes
+
+
 api.use('/restrito', (req,res, next) => {
     if('user' in req.session){
        return next()
     }  
     res.redirect('/login')   
 })
+api.use((req, res, next) => {
+    if('user' in req.session){
+     res.locals.user = req.session.user
+    }
+    next()
+})
+
+
 
 api.use('/restrito', restrito )
 api.get('/login', (req,res)=>{
