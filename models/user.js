@@ -28,6 +28,24 @@ UserSchema.pre('save',  function(next){
     })
 })
 
+//crete userschema to verify password when autenticate and check out password.
+UserSchema.methods.checkPassword = function(password){
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, this.password, (err,isMatch) => {
+         if(err){
+             reject(err)
+         }else{
+             resolve(isMatch)
+         }
+      })
+  })    
+  }
+
+
+
+
+
+
 //remember need register this mongoose
 const User = mongoose.model('User',UserSchema)
 module.exports= User
