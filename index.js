@@ -4,6 +4,7 @@ const port  = process.env.PORT || 3000
 const path = require('path')
 const session = require('express-session')
 const bodyParser = require('body-parser')
+const UserModel = require('./models/user')
 
 const noticias = require('./routes/noticias')
 const restrito = require('./routes/restrito')
@@ -38,11 +39,21 @@ api.get('/login', (req,res)=>{
     res.render('login')
 })
 
-const UserModel = require('./models/user')
+
 api.post('/login', async(req,res) =>{
   const user = await UserModel.findOne({username:req.body.username})
-      res.send(user)
+  const isValid = await user?.checkPassword(req.body.password)    
+  if(isValid){
+   req.session.user = user
+   res.redirect('/restrito/noticias')
+  }else{
+      res.redirect('/login')
+  }
+ // res.send({
+   //   user, isValid
+  //})
 })
+
 
 
 
